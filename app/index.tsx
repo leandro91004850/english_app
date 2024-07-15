@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import { requestQuiz } from '@/api/requestQuiz';
 
@@ -39,8 +40,15 @@ export default function Home() {
     fetchQuiz();
   }, [reload]); // Adiciona reload como dependência
 
-  const handlePress = () => {
-    setReload(!reload); // Atualiza o estado para recarregar os dados
+  const handlePress = (alternativaSelecionada: string) => {
+    if (alternativaSelecionada === quiz?.[0]?.portugues) {
+      // Ação para resposta correta
+      Alert.alert('Correto!', 'A tradução da palavra ' + quiz?.[0]?.english + ' é ' + quiz?.[0]?.portugues);
+      setReload(!reload); // Atualiza o estado para recarregar os dados
+    } else {
+      // Ação para resposta incorreta
+      Alert.alert('Incorreto!', 'Tente novamente.');
+    }
   };
   
   return (
@@ -55,14 +63,13 @@ export default function Home() {
 
           <View style={styles.formAction}>
             {quiz?.[0]?.portugues_alternativas.map((alternativa: string, index: number) => (
-                <TouchableOpacity key={index} onPress={handlePress}>
+                <TouchableOpacity key={index} onPress={() => handlePress(alternativa)}>
                   <View style={styles.btn}>
                     <Text style={styles.btnText}>{alternativa}</Text>
                   </View>
                 </TouchableOpacity>
               ))}
           </View>
-
         </View>
       </View>
     </SafeAreaView>
