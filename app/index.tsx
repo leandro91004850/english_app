@@ -10,8 +10,25 @@ import {
 } from 'react-native';
 import { requestQuiz } from '@/api/requestQuiz';
 
+export async function listQuiz() {
+  const response = await requestQuiz();
+
+  const dados = response.map((quiz: any) => {
+    return {
+      id: quiz.id,
+      english: quiz.english,
+      portugues: quiz.portugues,
+      acertos: quiz.acertos,
+      pronuncia: quiz.pronuncia,
+      portugues_alternativas: quiz.portugues_alternativas,
+    };
+  });
+  return dados;
+}
+
 export default function Home() {
-  const [quiz, setQuiz] = useState(null);
+  const [quiz, setQuiz] = useState<any>(null);
+  const [reload, setReload] = useState(false); // Estado para controle de recarregamento
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -20,21 +37,17 @@ export default function Home() {
     };
 
     fetchQuiz();
-  }, []);
+  }, [reload]); // Adiciona reload como dependência
 
-  if (!quiz) {
-    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff', justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Carregando...</Text>
-      </SafeAreaView>
-    );
-  }
+  const handlePress = () => {
+    setReload(!reload); // Atualiza o estado para recarregar os dados
+  };
   
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>already</Text>
+          <Text style={styles.title}>{quiz?.[0]?.english}</Text>
 
           <Text style={styles.subtitle}>Qual a tradução correta abaixo?</Text>
         </View>
@@ -43,34 +56,22 @@ export default function Home() {
 
 
           <View style={styles.formAction}>
-            <TouchableOpacity
-              onPress={() => {
-                // handle onPress
-              }}>
+            <TouchableOpacity onPress={handlePress}>
               <View style={styles.btn}>
                 <Text style={styles.btnText}>preocupação</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                // handle onPress
-              }}>
+            <TouchableOpacity onPress={handlePress}>
               <View style={styles.btn}>
                 <Text style={styles.btnText}>sempre</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                // handle onPress
-              }}>
+            <TouchableOpacity onPress={handlePress}>
               <View style={styles.btn}>
                 <Text style={styles.btnText}>Através</Text>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                // handle onPress
-              }}>
+            <TouchableOpacity onPress={handlePress}>
               <View style={styles.btn}>
                 <Text style={styles.btnText}>deve</Text>
               </View>
