@@ -48,34 +48,19 @@ export default function Home() {
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.title}>{quiz?.[0]?.english}</Text>
-
           <Text style={styles.subtitle}>Qual a tradução correta abaixo?</Text>
         </View>
 
         <View style={styles.form}>
 
-
           <View style={styles.formAction}>
-            <TouchableOpacity onPress={handlePress}>
-              <View style={styles.btn}>
-                <Text style={styles.btnText}>preocupação</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handlePress}>
-              <View style={styles.btn}>
-                <Text style={styles.btnText}>sempre</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handlePress}>
-              <View style={styles.btn}>
-                <Text style={styles.btnText}>Através</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handlePress}>
-              <View style={styles.btn}>
-                <Text style={styles.btnText}>deve</Text>
-              </View>
-            </TouchableOpacity>
+            {quiz?.[0]?.portugues_alternativas.map((alternativa: string, index: number) => (
+                <TouchableOpacity key={index} onPress={handlePress}>
+                  <View style={styles.btn}>
+                    <Text style={styles.btnText}>{alternativa}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
           </View>
 
         </View>
