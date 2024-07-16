@@ -56,15 +56,33 @@ export default function Home() {
     }
   };
 
-  async function playSound() {
-    console.log('Loading Sound');
-    const { sound } = await Audio.Sound.createAsync( require('./audio/mean.mp3')
-    );
-    setSound(sound);
 
-    console.log('Playing Sound');
-    await sound.playAsync();
+  async function playSound(audio: string) {
+      const audioPathMap: { [key: string]: any } = {
+          'mean': require('./audio/mean.mp3'),
+          'should': require('./audio/should.mp3'),
+          // Adicione mais mapeamentos conforme necessário
+      };
+  
+      if (!audioPathMap[audio]) {
+          console.error('Invalid audio file: '+ audio);
+          return;
+      }
+  
+      const selectedAudio = audioPathMap[audio];
+      console.log('Loading Sound ' + selectedAudio);
+  
+      try {
+          const { sound } = await Audio.Sound.createAsync(selectedAudio);
+          setSound(sound);
+  
+          console.log('Playing Sound');
+          await sound.playAsync();
+      } catch (error) {
+          console.error('Error loading or playing sound', error);
+      }
   }
+
 
   useEffect(() => {
     return sound
@@ -79,16 +97,14 @@ export default function Home() {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>{quiz?.[0]?.english}</Text>
+          <TouchableOpacity onPress={() => playSound(quiz?.[0]?.english)}>
+            <Text style={styles.title}>{quiz?.[0]?.english}</Text>
+          </TouchableOpacity>
           <Text style={styles.subtitle}>Qual a tradução correta abaixo?</Text>
           {(!quiz || quiz.length === 0) && (
             <Text style={styles.title}>Parabéns você concluiu o Quiz!</Text>
           )}
         </View>
-        <View style={styles.container}>
-         <Button title="Play Sound" onPress={playSound} />
-        </View>
-
         <View style={styles.form}>
           <View style={styles.formAction}></View>
           <View style={styles.formAction}>
