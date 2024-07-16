@@ -8,7 +8,9 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Button,
 } from 'react-native';
+import { Audio } from 'expo-av';
 import { requestQuiz } from '@/api/requestQuiz';
 import { requestQuizUpdate } from '@/api/requestQuizUpdate';
 
@@ -31,6 +33,7 @@ export async function listQuiz() {
 export default function Home() {
   const [quiz, setQuiz] = useState<any>(null);
   const [reload, setReload] = useState(false); // Estado para controle de recarregamento
+  const [sound, setSound] = useState<any>();
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -49,9 +52,28 @@ export default function Home() {
       setReload(!reload); // Atualiza o estado para recarregar os dados
     } else {
       requestQuizUpdate(quiz?.[0]?.id, alternativaSelecionada);
-      Alert.alert('Incorreto!', 'Tente novamente.');
+      Alert.alert('Incorreto!', 'Ex: ' + quiz?.[0]?.pronuncia);
     }
   };
+
+  async function playSound() {
+    console.log('Loading Sound');
+    const { sound } = await Audio.Sound.createAsync( require('./audio/mean.mp3')
+    );
+    setSound(sound);
+
+    console.log('Playing Sound');
+    await sound.playAsync();
+  }
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log('Unloading Sound');
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
   
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -62,6 +84,9 @@ export default function Home() {
           {(!quiz || quiz.length === 0) && (
             <Text style={styles.title}>Parabéns você concluiu o Quiz!</Text>
           )}
+        </View>
+        <View style={styles.container}>
+         <Button title="Play Sound" onPress={playSound} />
         </View>
 
         <View style={styles.form}>

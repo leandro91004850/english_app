@@ -7,7 +7,7 @@ export function requestQuizUpdate(id: any, portugues: any) {
         redirect: "follow"
     };
 
-    fetch("http://192.168.1.10:8000/generation/quiz/" + id + "/" + portugues, requestOptions)
+    fetch("http://javeiro.com.br:5000/generation/quiz/" + id + "/" + portugues, requestOptions)
         .then(response => response.json())
         .then(result => {
             console.log("List Question English: ", result);
