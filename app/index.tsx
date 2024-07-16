@@ -59,10 +59,13 @@ export default function Home() {
         <View style={styles.header}>
           <Text style={styles.title}>{quiz?.[0]?.english}</Text>
           <Text style={styles.subtitle}>Qual a tradução correta abaixo?</Text>
+          {(!quiz || quiz.length === 0) && (
+            <Text style={styles.title}>Parabéns você concluiu o Quiz!</Text>
+          )}
         </View>
 
         <View style={styles.form}>
-
+          <View style={styles.formAction}></View>
           <View style={styles.formAction}>
             {quiz?.[0]?.portugues_alternativas.map((alternativa: string, index: number) => (
                 <TouchableOpacity key={index} onPress={() => handlePress(alternativa)}>
@@ -100,6 +103,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#929292',
     textAlign: 'center',
+    marginBottom: 10,
   },
   /** Form */
   form: {
