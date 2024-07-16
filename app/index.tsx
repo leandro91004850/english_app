@@ -10,6 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import { requestQuiz } from '@/api/requestQuiz';
+import { requestQuizUpdate } from '@/api/requestQuizUpdate';
 
 export async function listQuiz() {
   const response = await requestQuiz();
@@ -43,10 +44,11 @@ export default function Home() {
   const handlePress = (alternativaSelecionada: string) => {
     if (alternativaSelecionada === quiz?.[0]?.portugues) {
       // Ação para resposta correta
-      Alert.alert('Correto!', 'A tradução da palavra ' + quiz?.[0]?.english + ' é ' + quiz?.[0]?.portugues);
+      requestQuizUpdate(quiz?.[0]?.id, alternativaSelecionada);
+      Alert.alert('Correto!', 'A tradução da palavra ' + quiz?.[0]?.english + ' é ' + alternativaSelecionada);
       setReload(!reload); // Atualiza o estado para recarregar os dados
     } else {
-      // Ação para resposta incorreta
+      requestQuizUpdate(quiz?.[0]?.id, alternativaSelecionada);
       Alert.alert('Incorreto!', 'Tente novamente.');
     }
   };

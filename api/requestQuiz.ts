@@ -8,7 +8,7 @@ export async function requestQuiz() {
     };
 
     try {
-        const response = await fetch("http://192.168.1.40:8000/generation/quiz", requestOptions);
+        const response = await fetch("http://192.168.1.10:8000/generation/quiz", requestOptions);
         const result = await response.json();
         console.log("List Question English: ", result);
         return result;
