@@ -15,6 +15,8 @@ export default function Layout() {
         
       <Stack.Screen name="profile" options={{title: 'Perfil'}}/>
       <Stack.Screen name="index" options={{title: 'Home'}}/>
+      <Stack.Screen name="user/index" options={{title: 'Usuário'}}/>
+      <Stack.Screen name="user/profile" options={{title: 'Perfil do Usuário'}}/>
     </Stack>
   );
 }
