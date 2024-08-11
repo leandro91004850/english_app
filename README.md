@@ -48,3 +48,53 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+* Rodando o projeto:
+    ```bash
+        $ npx expo start
+    ```
+
+* Rodando o projeto no modo clear cache:
+    ```bash
+        $ npx expo start --clear
+    ```
+
+* rodar modo externo da rede:
+    ```bash
+        $ npx expo start --tunnel
+    ```  
+
+
+* Instalando font family roboto:
+    ```bash
+        $ npx expo install expo-font @expo-google-fonts/roboto
+    ```
+
+* Instalando o gestor handle: https://docs.expo.dev/versions/latest/sdk/gesture-handler/
+    ```bash
+        $ npx expo install react-native-gesture-handler
+    ```
+
+    ## Atualizando a versão de expo em projetos antigos:
+
+Caso você tenha um projeto antigo e deseja atualizar a versão do expo, siga os passos abaixo:
+
+1. Instale a versão mais recente do expo:
+    ```bash
+        $ npm install expo@latest
+    ```
+2. Atualize o expo e todas as dependências:
+    ```bash
+        $ npx expo install --fix
+    ```
+3. verificar se existe problema nas dependências:
+    ```bash
+        $ npx expo-doctor
+    ```
+
+    ## Permitir leitura e escrita de arquivos:
+    
+        ```bash
+            $ chmod 666 nome_do_arquivo
+        ```

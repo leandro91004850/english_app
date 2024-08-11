@@ -13,6 +13,7 @@ import {
 import { Audio } from 'expo-av';
 import { requestQuiz } from '@/api/requestQuiz';
 import { requestQuizUpdate } from '@/api/requestQuizUpdate';
+import { Link, Stack } from 'expo-router';
 
 export async function listQuiz() {
   const response = await requestQuiz();
@@ -94,7 +95,13 @@ export default function Home() {
   }, [sound]);
   
   return (
+    
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+      <Link href={'/profile'}>Go to Profile</Link>
+      <Link href={'/user'}>Go to User</Link>
+    </View>
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => playSound(quiz?.[0]?.english)}>
