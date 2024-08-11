@@ -1,4 +1,3 @@
-//rnfe gerar arquivo base
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
@@ -6,14 +5,14 @@ import {
   View,
   Text,
   TouchableOpacity,
-  TextInput,
   Alert,
-  Button,
 } from 'react-native';
 import { Audio } from 'expo-av';
 import { requestQuiz } from '@/api/requestQuiz';
 import { requestQuizUpdate } from '@/api/requestQuizUpdate';
-import { Link, Stack } from 'expo-router';
+import * as FileSystem from 'expo-file-system';
+import axios from 'axios';
+import { fromByteArray } from 'base64-js';
 
 export async function listQuiz() {
   const response = await requestQuiz();
@@ -57,33 +56,51 @@ export default function Home() {
     }
   };
 
-
   async function playSound(audio: string) {
-      const audioPathMap: { [key: string]: any } = {
-          'mean': require('./audio/mean.mp3'),
-          'should': require('./audio/should.mp3'),
-          // Adicione mais mapeamentos conforme necessário
-      };
-  
-      if (!audioPathMap[audio]) {
-          console.error('Invalid audio file: '+ audio);
-          return;
-      }
-  
-      const selectedAudio = audioPathMap[audio];
-      console.log('Loading Sound ' + selectedAudio);
-  
-      try {
-          const { sound } = await Audio.Sound.createAsync(selectedAudio);
-          setSound(sound);
-  
-          console.log('Playing Sound');
-          await sound.playAsync();
-      } catch (error) {
-          console.error('Error loading or playing sound', error);
-      }
-  }
+    const audioPathMap: { [key: string]: any } = {
+        'mean': 'https://www.myinstants.com/media/sounds/hello-5.mp3',
+        'same': 'https://www.myinstants.com/media/sounds/world.mp3',
+        'which': 'https://www.myinstants.com/media/sounds/world.mp3',
+        'above': 'https://www.myinstants.com/media/sounds/world.mp3',
+    };
 
+    if (!audioPathMap[audio]) {
+        console.error('Invalid audio file: ' + audio);
+        return;
+    }
+
+    let selectedAudio = audioPathMap[audio];
+    const localUri = FileSystem.documentDirectory + audio + '.mp3';
+
+    // Verifica se o arquivo já existe localmente
+    const fileInfo = await FileSystem.getInfoAsync(localUri);
+    if (!fileInfo.exists) {
+        try {
+            console.log('Downloading Sound ' + audio);
+            const response = await axios.get(selectedAudio, { responseType: 'arraybuffer' });
+            const base64Audio = fromByteArray(new Uint8Array(response.data));
+            await FileSystem.writeAsStringAsync(localUri, base64Audio, { encoding: FileSystem.EncodingType.Base64 });
+            selectedAudio = localUri;
+        } catch (error) {
+            console.error('Error downloading sound', error);
+            return;
+        }
+    } else {
+        selectedAudio = localUri;
+    }
+
+    console.log('Loading Sound ' + selectedAudio);
+
+    try {
+        const { sound } = await Audio.Sound.createAsync({ uri: selectedAudio });
+        setSound(sound);
+
+        console.log('Playing Sound');
+        await sound.playAsync();
+    } catch (error) {
+        console.error('Error loading or playing sound', error);
+    }
+  }
 
   useEffect(() => {
     return sound
@@ -95,13 +112,7 @@ export default function Home() {
   }, [sound]);
   
   return (
-    
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-      <Link href={'/profile'}>Go to Profile</Link>
-      <Link href={'/user'}>Go to User</Link>
-    </View>
       <View style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => playSound(quiz?.[0]?.english)}>
@@ -159,7 +170,6 @@ const styles = StyleSheet.create({
   },
   formAction: {
     marginVertical: 24,
-
   },
   /** Button */
   btn: {
