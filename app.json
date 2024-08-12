@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "english-app",
+    "name": "english learning",
     "slug": "english-app",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -20,7 +20,9 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.leandro_cslsoftwares.englishapp"
+      "package": "com.leandro_cslsoftwares.englishapp",
+      "permissions": [],
+      "usesCleartextTraffic": true
     },
     "web": {
       "bundler": "metro",
