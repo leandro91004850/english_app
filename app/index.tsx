@@ -34,6 +34,7 @@ export default function Home() {
   const [quiz, setQuiz] = useState<any>(null);
   const [reload, setReload] = useState(false); // Estado para controle de recarregamento
   const [sound, setSound] = useState<any>();
+  const [audioPathMap, setAudioPathMap] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -41,7 +42,17 @@ export default function Home() {
       setQuiz(response);
     };
 
+    const fetchAudioPaths = async () => {
+      try {
+        const response = await axios.get('http://javeiro.com.br:8081/questions/words');
+        setAudioPathMap(response.data);
+      } catch (error) {
+        console.error('Error fetching audio paths', error);
+      }
+    };
+
     fetchQuiz();
+    fetchAudioPaths();
   }, [reload]); // Adiciona reload como dependência
 
   const handlePress = (alternativaSelecionada: string) => {
@@ -57,13 +68,6 @@ export default function Home() {
   };
 
   async function playSound(audio: string) {
-    const audioPathMap: { [key: string]: any } = {
-        'mean': 'https://www.myinstants.com/media/sounds/hello-5.mp3',
-        'same': 'https://www.myinstants.com/media/sounds/world.mp3',
-        'which': 'https://www.myinstants.com/media/sounds/world.mp3',
-        'above': 'https://www.myinstants.com/media/sounds/world.mp3',
-    };
-
     if (!audioPathMap[audio]) {
         console.error('Invalid audio file: ' + audio);
         return;
