@@ -98,3 +98,5 @@ Caso você tenha um projeto antigo e deseja atualizar a versão do expo, siga os
         ```bash
             $ chmod 666 nome_do_arquivo
         ```
+
+### usando o figma como ferramenta de design: [Figma design app](https://www.figma.com/community/file/1155362909441341285/)

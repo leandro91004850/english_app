@@ -122,7 +122,7 @@ export default function Home() {
           <TouchableOpacity onPress={() => playSound(quiz?.[0]?.english)}>
             <Text style={styles.title}>{quiz?.[0]?.english}</Text>
           </TouchableOpacity>
-          <Text style={styles.subtitle}>Qual a tradução correta abaixo?</Text>
+          <Text style={styles.subtitle}>Frase: {quiz?.[0]?.pronuncia}</Text>
           {(!quiz || quiz.length === 0) && (
             <Text style={styles.title}>Parabéns você concluiu o Quiz!</Text>
           )}
