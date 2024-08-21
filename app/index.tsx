@@ -37,6 +37,7 @@ export default function Home() {
   const [sound, setSound] = useState<any>();
   const [audioPathMap, setAudioPathMap] = useState<{ [key: string]: string }>({});
   const [clickedAlternatives, setClickedAlternatives] = useState<string[]>([]);
+  const [clickedIndices, setClickedIndices] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -57,15 +58,18 @@ export default function Home() {
     fetchAudioPaths();
   }, [reload]); // Adiciona reload como dependência
 
-  const handlePress = (alternativaSelecionada: string) => {
+  
+  const handlePress = (alternativaSelecionada: string, index: number) => {
     if (alternativaSelecionada === quiz?.[0]?.portugues) {
       // Ação para resposta correta
       requestQuizUpdate(quiz?.[0]?.id, alternativaSelecionada);
       setClickedAlternatives(prev => [...prev, alternativaSelecionada]);
+      setClickedIndices([...clickedIndices, index]);
       //setReload(!reload); // Atualiza o estado para recarregar os dados
     } else {
       requestQuizUpdate(quiz?.[0]?.id, alternativaSelecionada);
       setClickedAlternatives(prev => [...prev, alternativaSelecionada]);
+      setClickedIndices([...clickedIndices, index]);
       //Alert.alert('Incorreto!', '\nEx: ' + quiz?.[0]?.pronuncia);
     }
   };
@@ -137,12 +141,14 @@ export default function Home() {
           <View style={styles.formAction}></View>
           <View style={styles.formAction}>
             {quiz?.[0]?.portugues_alternativas.map((alternativa: string, index: number) => (
-                <TouchableOpacity key={index} onPress={() => handlePress(alternativa)}>
+              !clickedIndices.includes(index) && (
+                <TouchableOpacity key={index} onPress={() => handlePress(alternativa, index)}>
                   <View style={styles.btn}>
                     <Text style={styles.btnText}>{alternativa}</Text>
                   </View>
                 </TouchableOpacity>
-              ))}
+              )
+            ))}
           </View>
         </View>
       </View>
