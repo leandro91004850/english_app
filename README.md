@@ -100,3 +100,20 @@ Caso você tenha um projeto antigo e deseja atualizar a versão do expo, siga os
         ```
 
 ### usando o figma como ferramenta de design: [Figma design app](https://www.figma.com/community/file/1155362909441341285/)
+
+#### Gerando APK expo go:
+    ```bash
+       eas build -p android --profile preview
+    ```
+
+### Intalando o handle gesture:
+    ```bash
+        $ npx expo install react-native-gesture-handler
+    ```
+        
+### Instalar react native reanimated para funcionar moti:https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/
+
+    ```bash
+        npx expo install react-native-reanimated
+    ```
+

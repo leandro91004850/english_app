@@ -13,6 +13,7 @@ import { requestQuizUpdate } from '@/api/requestQuizUpdate';
 import * as FileSystem from 'expo-file-system';
 import axios from 'axios';
 import { fromByteArray } from 'base64-js';
+import Toast from 'react-native-toast-message';
 
 export async function listQuiz() {
   const response = await requestQuiz();
@@ -35,6 +36,7 @@ export default function Home() {
   const [reload, setReload] = useState(false); // Estado para controle de recarregamento
   const [sound, setSound] = useState<any>();
   const [audioPathMap, setAudioPathMap] = useState<{ [key: string]: string }>({});
+  const [clickedAlternative, setClickedAlternative] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchQuiz = async () => {
@@ -59,11 +61,12 @@ export default function Home() {
     if (alternativaSelecionada === quiz?.[0]?.portugues) {
       // Ação para resposta correta
       requestQuizUpdate(quiz?.[0]?.id, alternativaSelecionada);
-      Alert.alert('Correto!', 'A tradução da palavra ' + quiz?.[0]?.english + ' é ' + alternativaSelecionada);
-      setReload(!reload); // Atualiza o estado para recarregar os dados
+      setClickedAlternative(alternativaSelecionada);
+      //setReload(!reload); // Atualiza o estado para recarregar os dados
     } else {
       requestQuizUpdate(quiz?.[0]?.id, alternativaSelecionada);
-      Alert.alert('Incorreto!', 'Ex: ' + quiz?.[0]?.pronuncia);
+      setClickedAlternative(alternativaSelecionada);
+      //Alert.alert('Incorreto!', '\nEx: ' + quiz?.[0]?.pronuncia);
     }
   };
 
@@ -123,6 +126,7 @@ export default function Home() {
             <Text style={styles.title}>{quiz?.[0]?.english}</Text>
           </TouchableOpacity>
           <Text style={styles.subtitle}>Frase: {quiz?.[0]?.pronuncia}</Text>
+          <Text style={styles.subtitle}>{clickedAlternative ? clickedAlternative : 'Frases clicadas'}</Text>
           {(!quiz || quiz.length === 0) && (
             <Text style={styles.title}>Parabéns você concluiu o Quiz!</Text>
           )}
