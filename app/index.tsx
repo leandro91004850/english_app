@@ -130,16 +130,14 @@ export default function Home() {
             <Text style={styles.title}>{quiz?.[0]?.english}</Text>
           </TouchableOpacity>
           <Text style={styles.subtitle}>Frase: {quiz?.[0]?.pronuncia}</Text>
-          <Text style={styles.subtitle}>
-            {clickedAlternatives.length > 0 ? clickedAlternatives.join(' ') : 'Frases clicadas'}
+          <Text style={styles.frase}>
+            {clickedAlternatives.length > 0 ? clickedAlternatives.join(' ') : 'Traduza a frase acima'}
           </Text>
           {(!quiz || quiz.length === 0) && (
             <Text style={styles.title}>Parabéns você concluiu o Quiz!</Text>
           )}
         </View>
         <View style={styles.form}>
-          <View style={styles.formAction}></View>
-          <View style={styles.formAction}>
             {quiz?.[0]?.portugues_alternativas.map((alternativa: string, index: number) => (
               !clickedIndices.includes(index) && (
                 <TouchableOpacity key={index} onPress={() => handlePress(alternativa, index)}>
@@ -150,8 +148,14 @@ export default function Home() {
               )
             ))}
           </View>
+
+          <View>
+            <TouchableOpacity>
+              <Text style={styles.botaoEnviar}>Responder</Text>
+            </TouchableOpacity>
+          </View>
+
         </View>
-      </View>
     </SafeAreaView>
   );
 }
@@ -180,30 +184,60 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 10,
   },
-  /** Form */
+
   form: {
-    marginBottom: 24,
+      //marginBottom: 24,
+      backgroundColor: '#ececec',
+      display: 'flex',
+      flexWrap: 'wrap',
+      padding: 10,
+      height: '40%', // ou um valor específico como '500px'
+      borderRadius: 8,
   },
-  formAction: {
-    marginVertical: 24,
+
+  frase: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#00711c',
+    marginBottom: 6,
+    textAlign: 'center',
   },
-  /** Button */
+    
   btn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 10,
+    paddingEnd: 10,
+    marginBottom: 10, 
+    marginLeft: 3,          
     borderRadius: 8,
     paddingVertical: 8,
     paddingHorizontal: 16,
-    borderWidth: 1,
-    backgroundColor: '#007aff',
-    borderColor: '#007aff',
-    marginBottom: 10,
+    backgroundColor: '#838383',
+    
   },
+  
   btnText: {
     fontSize: 17,
     lineHeight: 24,
     fontWeight: '600',
     color: '#fff',
   },
+
+  botaoEnviar: {
+    marginTop: 20,
+    fontSize: 17,
+    lineHeight: 24,
+    fontWeight: '600',
+    color: '#fff',
+    backgroundColor: '#f4511e',
+    padding: 10,
+    paddingEnd: 10,
+    marginBottom: 10, 
+    marginLeft: 3,          
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    textAlign: 'center',
+  },
+
+
 });
