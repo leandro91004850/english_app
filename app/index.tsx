@@ -25,6 +25,7 @@ export async function listQuiz() {
       portugues: quiz.portugues,
       acertos: quiz.acertos,
       pronuncia: quiz.pronuncia,
+      traducao: quiz.traducao,
       portugues_alternativas: quiz.portugues_alternativas,
     };
   });
@@ -61,18 +62,28 @@ export default function Home() {
   
   const handlePress = (alternativaSelecionada: string, index: number) => {
     if (alternativaSelecionada === quiz?.[0]?.portugues) {
-      // Ação para resposta correta
-      requestQuizUpdate(quiz?.[0]?.id, alternativaSelecionada);
       setClickedAlternatives(prev => [...prev, alternativaSelecionada]);
       setClickedIndices([...clickedIndices, index]);
-      //setReload(!reload); // Atualiza o estado para recarregar os dados
     } else {
-      requestQuizUpdate(quiz?.[0]?.id, alternativaSelecionada);
       setClickedAlternatives(prev => [...prev, alternativaSelecionada]);
       setClickedIndices([...clickedIndices, index]);
-      //Alert.alert('Incorreto!', '\nEx: ' + quiz?.[0]?.pronuncia);
     }
   };
+
+  const verificandoFrase = (frase: string) => {
+    if(frase === quiz?.[0]?.traducao){
+      requestQuizUpdate(quiz?.[0]?.id, quiz?.[0]?.portugues);
+      setReload(!reload);
+      setClickedAlternatives([]);
+      setClickedIndices([]);
+    }else{
+      requestQuizUpdate(quiz?.[0]?.id, frase);
+      Alert.alert('Incorreto!', '\nEnglish: ' + quiz?.[0]?.pronuncia + '\n\nPortugues: ' + quiz?.[0]?.traducao);
+      setReload(!reload);
+      setClickedAlternatives([]);
+      setClickedIndices([]);
+    }
+  }
 
   async function playSound(audio: string) {
     if (!audioPathMap[audio]) {
@@ -150,7 +161,7 @@ export default function Home() {
           </View>
 
           <View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => verificandoFrase(clickedAlternatives.join(' '))}>
               <Text style={styles.botaoEnviar}>Responder</Text>
             </TouchableOpacity>
           </View>
@@ -191,7 +202,7 @@ const styles = StyleSheet.create({
       display: 'flex',
       flexWrap: 'wrap',
       padding: 10,
-      height: '40%', // ou um valor específico como '500px'
+      height: '50%', // ou um valor específico como '500px'
       borderRadius: 8,
   },
 
