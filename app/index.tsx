@@ -132,6 +132,12 @@ export default function Home() {
         }
       : undefined;
   }, [sound]);
+
+  useEffect(() => {
+    if (quiz?.[0]?.english) {
+      playSound(quiz?.[0]?.english);
+    }
+  }, [quiz]);
   
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>

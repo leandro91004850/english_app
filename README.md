@@ -117,3 +117,10 @@ Caso você tenha um projeto antigo e deseja atualizar a versão do expo, siga os
         npx expo install react-native-reanimated
     ```
 
+### Nvm:
+    ```bash
+        $ nvm install 20.11.1
+    ```
+    ```bash
+        $ nvm use 20.11.1
+    ```
