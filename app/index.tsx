@@ -136,6 +136,9 @@ export default function Home() {
   useEffect(() => {
     if (quiz?.[0]?.english) {
       playSound(quiz?.[0]?.english);
+      setTimeout(() => {
+        playSound(quiz?.[0]?.english);
+      }, 8000); // 8 segundos
     }
   }, [quiz]);
   
