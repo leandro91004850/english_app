@@ -13,7 +13,6 @@ import { requestQuizUpdate } from '@/api/requestQuizUpdate';
 import * as FileSystem from 'expo-file-system';
 import axios from 'axios';
 import { fromByteArray } from 'base64-js';
-import Toast from 'react-native-toast-message';
 
 export async function listQuiz() {
   const response = await requestQuiz();
@@ -48,7 +47,7 @@ export default function Home() {
 
     const fetchAudioPaths = async () => {
       try {
-        const response = await axios.get('http://javeiro.com.br:8081/questions/words');
+        const response = await axios.get('http://javeiro.com.br:8081/questions/sounds/12');
         setAudioPathMap(response.data);
       } catch (error) {
         console.error('Error fetching audio paths', error);
@@ -134,11 +133,11 @@ export default function Home() {
   }, [sound]);
 
   useEffect(() => {
-    if (quiz?.[0]?.english) {
-      playSound(quiz?.[0]?.english);
+    if (quiz?.[0]?.pronuncia) {
+      playSound(quiz?.[0]?.pronuncia);
       setTimeout(() => {
-        playSound(quiz?.[0]?.english);
-      }, 8000); // 8 segundos
+        playSound(quiz?.[0]?.pronuncia);
+      }, 8000);
     }
   }, [quiz]);
   
@@ -146,10 +145,9 @@ export default function Home() {
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => playSound(quiz?.[0]?.english)}>
-            <Text style={styles.title}>{quiz?.[0]?.english}</Text>
-          </TouchableOpacity>
-          <Text style={styles.subtitle}>Frase: {quiz?.[0]?.pronuncia}</Text>
+          <TouchableOpacity onPress={() => playSound(quiz?.[0]?.pronuncia)}>
+            <Text style={styles.subtitle}>Frase: {quiz?.[0]?.pronuncia}</Text>
+          </TouchableOpacity>          
           <Text style={styles.frase}>
             {clickedAlternatives.length > 0 ? clickedAlternatives.join(' ') : 'Traduza a frase acima'}
           </Text>
@@ -198,11 +196,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   subtitle: {
-    fontSize: 15,
-    fontWeight: '500',
-    color: '#929292',
+    fontSize: 19,
+    fontWeight: 'bold',
+    color: '#787171',
     textAlign: 'center',
-    marginBottom: 10,
+    marginBottom: 10,    
   },
 
   form: {
